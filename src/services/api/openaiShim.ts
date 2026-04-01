@@ -217,6 +217,21 @@ function convertMessages(
   return result
 }
 
+/**
+ * OpenAI requires every key in `properties` to also appear in `required`.
+ * Anthropic schemas often mark fields as optional (omitted from `required`),
+ * which causes 400 errors on OpenAI/Codex endpoints. This normalizes the
+ * schema by ensuring `required` is a superset of `properties` keys.
+ */
+function normalizeSchemaForOpenAI(schema: Record<string, unknown>): Record<string, unknown> {
+  if (schema.type !== 'object' || !schema.properties) return schema
+  const properties = schema.properties as Record<string, unknown>
+  const existingRequired = Array.isArray(schema.required) ? schema.required as string[] : []
+  const allKeys = Object.keys(properties)
+  const required = Array.from(new Set([...existingRequired, ...allKeys]))
+  return { ...schema, required }
+}
+
 function convertTools(
   tools: Array<{ name: string; description?: string; input_schema?: Record<string, unknown> }>,
 ): OpenAITool[] {
@@ -227,7 +242,7 @@ function convertTools(
       function: {
         name: t.name,
         description: t.description ?? '',
-        parameters: t.input_schema ?? { type: 'object', properties: {} },
+        parameters: normalizeSchemaForOpenAI(t.input_schema ?? { type: 'object', properties: {} }),
       },
     }))
 }
