@@ -97,8 +97,8 @@ import { logError } from '../utils/log.js';
 /* eslint-disable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */
 const useVoiceIntegration: typeof import('../hooks/useVoiceIntegration.js').useVoiceIntegration = feature('VOICE_MODE') ? require('../hooks/useVoiceIntegration.js').useVoiceIntegration : () => ({
   stripTrailing: () => 0,
-  handleKeyEvent: () => {},
-  resetAnchor: () => {}
+  handleKeyEvent: () => { },
+  resetAnchor: () => { }
 });
 const VoiceKeybindingHandler: typeof import('../hooks/useVoiceIntegration.js').VoiceKeybindingHandler = feature('VOICE_MODE') ? require('../hooks/useVoiceIntegration.js').VoiceKeybindingHandler : () => null;
 // Frustration detection is ant-only (dogfooding). Conditional require so external
@@ -106,11 +106,11 @@ const VoiceKeybindingHandler: typeof import('../hooks/useVoiceIntegration.js').V
 // on every messages change, plus the GrowthBook fetch).
 const useFrustrationDetection: typeof import('../components/FeedbackSurvey/useFrustrationDetection.js').useFrustrationDetection = "external" === 'ant' ? require('../components/FeedbackSurvey/useFrustrationDetection.js').useFrustrationDetection : () => ({
   state: 'closed',
-  handleTranscriptSelect: () => {}
+  handleTranscriptSelect: () => { }
 });
 // Ant-only org warning. Conditional require so the org UUID list is
 // eliminated from external builds (one UUID is on excluded-strings).
-const useAntOrgWarningNotification: typeof import('../hooks/notifs/useAntOrgWarningNotification.js').useAntOrgWarningNotification = "external" === 'ant' ? require('../hooks/notifs/useAntOrgWarningNotification.js').useAntOrgWarningNotification : () => {};
+const useAntOrgWarningNotification: typeof import('../hooks/notifs/useAntOrgWarningNotification.js').useAntOrgWarningNotification = "external" === 'ant' ? require('../hooks/notifs/useAntOrgWarningNotification.js').useAntOrgWarningNotification : () => { };
 // Dead code elimination: conditional import for coordinator mode
 const getCoordinatorUserContext: (mcpClients: ReadonlyArray<{
   name: string;
@@ -192,7 +192,7 @@ import { useInboxPoller } from '../hooks/useInboxPoller.js';
 // Dead code elimination: conditional import for loop mode
 /* eslint-disable @typescript-eslint/no-require-imports */
 const proactiveModule = feature('PROACTIVE') || feature('KAIROS') ? require('../proactive/index.js') : null;
-const PROACTIVE_NO_OP_SUBSCRIBE = (_cb: () => void) => () => {};
+const PROACTIVE_NO_OP_SUBSCRIBE = (_cb: () => void) => () => { };
 const PROACTIVE_FALSE = () => false;
 const SUGGEST_BG_PR_NOOP = (_p: string, _n: string): boolean => false;
 const useProactive = feature('PROACTIVE') || feature('KAIROS') ? require('../proactive/useProactive.js').useProactive : null;
@@ -297,7 +297,7 @@ const EMPTY_MCP_CLIENTS: MCPServerConnection[] = [];
 // Stable stub for useAssistantHistory's non-KAIROS branch — avoids a new
 // function identity each render, which would break composedOnScroll's memo.
 const HISTORY_STUB = {
-  maybeLoadOlder: (_: ScrollBoxHandle) => {}
+  maybeLoadOlder: (_: ScrollBoxHandle) => { }
 };
 // Window after a user-initiated scroll during which type-into-empty does NOT
 // repin to bottom. Josh Rosen's workflow: Claude emits long output → scroll
@@ -448,28 +448,28 @@ function TranscriptSearchBar({
   const off = cursorOffset;
   const cursorChar = off < query.length ? query[off] : ' ';
   return <Box borderTopDimColor borderBottom={false} borderLeft={false} borderRight={false} borderStyle="single" marginTop={1} paddingLeft={2} width="100%"
-  // applySearchHighlight scans the whole screen buffer. The query
-  // text rendered here IS on screen — /foo matches its own 'foo' in
-  // the bar. With no content matches that's the ONLY visible match →
-  // gets CURRENT → underlined. noSelect makes searchHighlight.ts:76
-  // skip these cells (same exclusion as gutters). You can't text-
-  // select the bar either; it's transient chrome, fine.
-  noSelect>
-      <Text>/</Text>
-      <Text>{query.slice(0, off)}</Text>
-      <Text inverse>{cursorChar}</Text>
-      {off < query.length && <Text>{query.slice(off + 1)}</Text>}
-      <Box flexGrow={1} />
-      {indexStatus === 'building' ? <Text dimColor>indexing… </Text> : indexStatus ? <Text dimColor>indexed in {indexStatus.ms}ms </Text> : count === 0 && query ? <Text color="error">no matches </Text> : count > 0 ?
-    // Engine-counted (indexOf on extractSearchText). May drift from
-    // render-count for ghost/phantom messages — badge is a rough
-    // location hint. scanElement gives exact per-message positions
-    // but counting ALL would cost ~1-3ms × matched-messages.
-    <Text dimColor>
-          {current}/{count}
-          {'  '}
-        </Text> : null}
-    </Box>;
+    // applySearchHighlight scans the whole screen buffer. The query
+    // text rendered here IS on screen — /foo matches its own 'foo' in
+    // the bar. With no content matches that's the ONLY visible match →
+    // gets CURRENT → underlined. noSelect makes searchHighlight.ts:76
+    // skip these cells (same exclusion as gutters). You can't text-
+    // select the bar either; it's transient chrome, fine.
+    noSelect>
+    <Text>/</Text>
+    <Text>{query.slice(0, off)}</Text>
+    <Text inverse>{cursorChar}</Text>
+    {off < query.length && <Text>{query.slice(off + 1)}</Text>}
+    <Box flexGrow={1} />
+    {indexStatus === 'building' ? <Text dimColor>indexing… </Text> : indexStatus ? <Text dimColor>indexed in {indexStatus.ms}ms </Text> : count === 0 && query ? <Text color="error">no matches </Text> : count > 0 ?
+      // Engine-counted (indexOf on extractSearchText). May drift from
+      // render-count for ghost/phantom messages — badge is a rough
+      // location hint. scanElement gives exact per-message positions
+      // but counting ALL would cost ~1-3ms × matched-messages.
+      <Text dimColor>
+        {current}/{count}
+        {'  '}
+      </Text> : null}
+  </Box>;
 }
 const TITLE_ANIMATION_FRAMES = ['⠂', '⠐'];
 const TITLE_STATIC_PREFIX = '✳';
@@ -605,8 +605,8 @@ export function REPL({
   const moreRightEnabled = useMemo(() => "external" === 'ant' && isEnvTruthy(process.env.CLAUDE_MORERIGHT), []);
   const disableVirtualScroll = useMemo(() => isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL), []);
   const disableMessageActions = feature('MESSAGE_ACTIONS') ?
-  // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
-  useMemo(() => isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_MESSAGE_ACTIONS), []) : false;
+    // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
+    useMemo(() => isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_MESSAGE_ACTIONS), []) : false;
 
   // Agent definition is state so /resume can update it mid-session
   const [mainThreadAgentDefinition, setMainThreadAgentDefinition] = useState(initialMainThreadAgentDefinition);
@@ -865,11 +865,11 @@ export function REPL({
 
   // Ref for the bridge result callback — set after useReplBridge initializes,
   // read in the onQuery finally block to notify mobile clients that a turn ended.
-  const sendBridgeResultRef = useRef<() => void>(() => {});
+  const sendBridgeResultRef = useRef<() => void>(() => { });
 
   // Ref for the synchronous restore callback — set after restoreMessageSync is
   // defined, read in the onQuery finally block for auto-restore on interrupt.
-  const restoreMessageSyncRef = useRef<(m: UserMessage) => void>(() => {});
+  const restoreMessageSyncRef = useRef<(m: UserMessage) => void>(() => { });
 
   // Ref to the fullscreen layout's scroll box for keyboard scrolling.
   // Null when fullscreen mode is disabled (ref never attached).
@@ -1246,8 +1246,8 @@ export function REPL({
   const cursorNavRef = useRef<MessageActionsNav | null>(null);
   // Memoized so Messages' React.memo holds.
   const unseenDivider = useMemo(() => computeUnseenDivider(messages, dividerIndex),
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- length change covers appends; useUnseenDivider's count-drop guard clears dividerIndex on replace/rewind
-  [dividerIndex, messages.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- length change covers appends; useUnseenDivider's count-drop guard clears dividerIndex on replace/rewind
+    [dividerIndex, messages.length]);
   // Re-pin scroll to bottom and clear the unseen-messages baseline. Called
   // on any user-driven return-to-live action (submit, type-into-empty,
   // overlay appear/dismiss).
@@ -1276,13 +1276,13 @@ export function REPL({
   const {
     maybeLoadOlder
   } = feature('KAIROS') ?
-  // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
-  useAssistantHistory({
-    config: remoteSessionConfig,
-    setMessages,
-    scrollRef,
-    onPrepend: shiftDivider
-  }) : HISTORY_STUB;
+      // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
+      useAssistantHistory({
+        config: remoteSessionConfig,
+        setMessages,
+        scrollRef,
+        onPrepend: shiftDivider
+      }) : HISTORY_STUB;
   // Compose useUnseenDivider's callbacks with the lazy-load trigger.
   const composedOnScroll = useCallback((sticky: boolean, handle: ScrollBoxHandle) => {
     lastUserScrollTsRef.current = Date.now();
@@ -1593,12 +1593,12 @@ export function REPL({
       swarmStartTimeRef.current = null;
       swarmBudgetInfoRef.current = undefined;
       setMessages(prev => [...prev, createTurnDurationMessage(totalMs, deferredBudget,
-      // Count only what recordTranscript will persist — ephemeral
-      // progress ticks and non-ant attachments are filtered by
-      // isLoggableMessage and never reach disk. Using raw prev.length
-      // would make checkResumeConsistency report false delta<0 for
-      // every turn that ran a progress-emitting tool.
-      count(prev, isLoggableMessage))]);
+        // Count only what recordTranscript will persist — ephemeral
+        // progress ticks and non-ant attachments are filtered by
+        // isLoggableMessage and never reach disk. Using raw prev.length
+        // would make checkResumeConsistency report false delta<0 for
+        // every turn that ran a progress-emitting tool.
+        count(prev, isLoggableMessage))]);
     }
   }, [hasRunningTeammates, setMessages]);
 
@@ -1665,19 +1665,19 @@ export function REPL({
     setToolJSX
   });
   const showSpinner = (!toolJSX || toolJSX.showSpinner === true) && toolUseConfirmQueue.length === 0 && promptQueue.length === 0 && (
-  // Show spinner during input processing, API call, while teammates are running,
-  // or while pending task notifications are queued (prevents spinner bounce between consecutive notifications)
-  isLoading || userInputOnProcessing || hasRunningTeammates ||
-  // Keep spinner visible while task notifications are queued for processing.
-  // Without this, the spinner briefly disappears between consecutive notifications
-  // (e.g., multiple background agents completing in rapid succession) because
-  // isLoading goes false momentarily between processing each one.
-  getCommandQueueLength() > 0) &&
-  // Hide spinner when waiting for leader to approve permission request
-  !pendingWorkerRequest && !onlySleepToolActive && (
-  // Hide spinner when streaming text is visible (the text IS the feedback),
-  // but keep it when isBriefOnly suppresses the streaming text display
-  !visibleStreamingText || isBriefOnly);
+    // Show spinner during input processing, API call, while teammates are running,
+    // or while pending task notifications are queued (prevents spinner bounce between consecutive notifications)
+    isLoading || userInputOnProcessing || hasRunningTeammates ||
+    // Keep spinner visible while task notifications are queued for processing.
+    // Without this, the spinner briefly disappears between consecutive notifications
+    // (e.g., multiple background agents completing in rapid succession) because
+    // isLoading goes false momentarily between processing each one.
+    getCommandQueueLength() > 0) &&
+    // Hide spinner when waiting for leader to approve permission request
+    !pendingWorkerRequest && !onlySleepToolActive && (
+      // Hide spinner when streaming text is visible (the text IS the feedback),
+      // but keep it when isBriefOnly suppresses the streaming text display
+      !visibleStreamingText || isBriefOnly);
 
   // Check if any permission or ask question prompt is currently visible
   // This is used to prevent the survey from opening while prompts are active
@@ -2323,9 +2323,9 @@ export function REPL({
     addNotification({
       key: 'sandbox-unavailable',
       jsx: <>
-          <Text color="warning">sandbox disabled</Text>
-          <Text dimColor> · /sandbox</Text>
-        </>,
+        <Text color="warning">sandbox disabled</Text>
+        <Text dimColor> · /sandbox</Text>
+      </>,
       priority: 'medium'
     });
   }, [addNotification]);
@@ -2676,7 +2676,7 @@ export function REPL({
     // useDeferredHookMessages) and attachment messages (appended by
     // processTextPrompt) — both pushed length past 1 on turn one, so the
     // title silently fell through to the "Claude Code" default.
-    if (getAPIProvider() === 'firstParty' && !titleDisabled && !sessionTitle && !agentTitle && !haikuTitleAttemptedRef.current) {
+    if (!titleDisabled && !sessionTitle && !agentTitle && !haikuTitleAttemptedRef.current) {
       const firstUserMessage = newMessages.find(m => m.type === 'user' && !m.isMeta);
       const text = firstUserMessage?.type === 'user' ? getContentText(firstUserMessage.message.content) : null;
       // Skip synthetic breadcrumbs — slash-command output, prompt-skill
@@ -2686,7 +2686,7 @@ export function REPL({
       if (text && !text.startsWith(`<${LOCAL_COMMAND_STDOUT_TAG}>`) && !text.startsWith(`<${COMMAND_MESSAGE_TAG}>`) && !text.startsWith(`<${COMMAND_NAME_TAG}>`) && !text.startsWith(`<${BASH_INPUT_TAG}>`)) {
         haikuTitleAttemptedRef.current = true;
         void generateSessionTitle(text, new AbortController().signal).then(title => {
-          if (title) setHaikuTitle(title);else haikuTitleAttemptedRef.current = false;
+          if (title) setHaikuTitle(title); else haikuTitleAttemptedRef.current = false;
         }, () => {
           haikuTitleAttemptedRef.current = false;
         });
@@ -2760,11 +2760,11 @@ export function REPL({
       });
     }
     queryCheckpoint('query_context_loading_start');
-    const [,, defaultSystemPrompt, baseUserContext, systemContext] = await Promise.all([
-    // IMPORTANT: do this after setMessages() above, to avoid UI jank
-    checkAndDisableBypassPermissionsIfNeeded(toolPermissionContext, setAppState),
-    // Gated on TRANSCRIPT_CLASSIFIER so GrowthBook kill switch runs wherever auto mode is built in
-    feature('TRANSCRIPT_CLASSIFIER') ? checkAndDisableAutoModeIfNeeded(toolPermissionContext, setAppState, store.getState().fastMode) : undefined, getSystemPrompt(freshTools, mainLoopModelParam, Array.from(toolPermissionContext.additionalWorkingDirectories.keys()), freshMcpClients), getUserContext(), getSystemContext()]);
+    const [, , defaultSystemPrompt, baseUserContext, systemContext] = await Promise.all([
+      // IMPORTANT: do this after setMessages() above, to avoid UI jank
+      checkAndDisableBypassPermissionsIfNeeded(toolPermissionContext, setAppState),
+      // Gated on TRANSCRIPT_CLASSIFIER so GrowthBook kill switch runs wherever auto mode is built in
+      feature('TRANSCRIPT_CLASSIFIER') ? checkAndDisableAutoModeIfNeeded(toolPermissionContext, setAppState, store.getState().fastMode) : undefined, getSystemPrompt(freshTools, mainLoopModelParam, Array.from(toolPermissionContext.additionalWorkingDirectories.keys()), freshMcpClients), getUserContext(), getSystemContext()]);
     const userContext = {
       ...baseUserContext,
       ...getCoordinatorUserContext(freshMcpClients, isScratchpadEnabled() ? getScratchpadDir() : undefined),
@@ -3110,9 +3110,9 @@ export function REPL({
       if (typeof content === 'string' && !initialMsg.message.planContent) {
         // Route through onSubmit for proper processing including UserPromptSubmit hooks
         void onSubmit(content, {
-          setCursorOffset: () => {},
-          clearBuffer: () => {},
-          resetHistory: () => {}
+          setCursorOffset: () => { },
+          clearBuffer: () => { },
+          resetHistory: () => { }
         });
       } else {
         // Plan messages or complex content (images, etc.) - send directly to model
@@ -3121,10 +3121,10 @@ export function REPL({
         const newAbortController = createAbortController();
         setAbortController(newAbortController);
         void onQuery([initialMsg.message], newAbortController, true,
-        // shouldQuery
-        [],
-        // additionalAllowedTools
-        mainLoopModel);
+          // shouldQuery
+          [],
+          // additionalAllowedTools
+          mainLoopModel);
       }
 
       // Reset ref after a delay to allow new initial messages
@@ -3526,18 +3526,18 @@ export function REPL({
       setStashedPrompt(undefined);
     }
   }, [queryGuard,
-  // isLoading is read at the !isLoading checks above for input-clearing
-  // and submitCount gating. It's derived from isQueryActive || isExternalLoading,
-  // so including it here ensures the closure captures the fresh value.
-  isLoading, isExternalLoading, inputMode, commands, setInputValue, setInputMode, setPastedContents, setSubmitCount, setIDESelection, setToolJSX, getToolUseContext,
-  // messages is read via messagesRef.current inside the callback to
-  // keep onSubmit stable across message updates (see L2384/L2400/L2662).
-  // Without this, each setMessages call (~30× per turn) recreates
-  // onSubmit, pinning the REPL render scope (1776B) + that render's
-  // messages array in downstream closures (PromptInput, handleAutoRunIssue).
-  // Heap analysis showed ~9 REPL scopes and ~15 messages array versions
-  // accumulating after #20174/#20175, all traced to this dep.
-  mainLoopModel, pastedContents, ideSelection, setUserInputOnProcessing, setAbortController, addNotification, onQuery, stashedPrompt, setStashedPrompt, setAppState, onBeforeQuery, canUseTool, remoteSession, setMessages, awaitPendingHooks, repinScroll]);
+    // isLoading is read at the !isLoading checks above for input-clearing
+    // and submitCount gating. It's derived from isQueryActive || isExternalLoading,
+    // so including it here ensures the closure captures the fresh value.
+    isLoading, isExternalLoading, inputMode, commands, setInputValue, setInputMode, setPastedContents, setSubmitCount, setIDESelection, setToolJSX, getToolUseContext,
+    // messages is read via messagesRef.current inside the callback to
+    // keep onSubmit stable across message updates (see L2384/L2400/L2662).
+    // Without this, each setMessages call (~30× per turn) recreates
+    // onSubmit, pinning the REPL render scope (1776B) + that render's
+    // messages array in downstream closures (PromptInput, handleAutoRunIssue).
+    // Heap analysis showed ~9 REPL scopes and ~15 messages array versions
+    // accumulating after #20174/#20175, all traced to this dep.
+    mainLoopModel, pastedContents, ideSelection, setUserInputOnProcessing, setAbortController, addNotification, onQuery, stashedPrompt, setStashedPrompt, setAppState, onBeforeQuery, canUseTool, remoteSession, setMessages, awaitPendingHooks, repinScroll]);
 
   // Callback for when user submits input while viewing a teammate's transcript
   const onAgentSubmit = useCallback(async (input: string, task: InProcessTeammateTaskState | LocalAgentTaskState, helpers: PromptInputHelpers) => {
@@ -3558,8 +3558,8 @@ export function REPL({
           addNotification({
             key: `resume-agent-failed-${task.id}`,
             jsx: <Text color="error">
-                  Failed to resume agent: {errorMessage(err)}
-                </Text>,
+              Failed to resume agent: {errorMessage(err)}
+            </Text>,
             priority: 'low'
           });
         });
@@ -3577,9 +3577,9 @@ export function REPL({
     const command = autoRunIssueReason ? getAutoRunCommand(autoRunIssueReason) : '/issue';
     setAutoRunIssueReason(null); // Clear the state
     onSubmit(command, {
-      setCursorOffset: () => {},
-      clearBuffer: () => {},
-      resetHistory: () => {}
+      setCursorOffset: () => { },
+      clearBuffer: () => { },
+      resetHistory: () => { }
     }).catch(err => {
       logForDebugging(`Auto-run ${command} failed: ${errorMessage(err)}`);
     });
@@ -3592,9 +3592,9 @@ export function REPL({
   const handleSurveyRequestFeedback = useCallback(() => {
     const command = "external" === 'ant' ? '/issue' : '/feedback';
     onSubmit(command, {
-      setCursorOffset: () => {},
-      clearBuffer: () => {},
-      resetHistory: () => {}
+      setCursorOffset: () => { },
+      clearBuffer: () => { },
+      resetHistory: () => { }
     }).catch(err => {
       logForDebugging(`Survey feedback request failed: ${err instanceof Error ? err.message : String(err)}`);
     });
@@ -3609,9 +3609,9 @@ export function REPL({
   onSubmitRef.current = onSubmit;
   const handleOpenRateLimitOptions = useCallback(() => {
     void onSubmitRef.current('/rate-limit-options', {
-      setCursorOffset: () => {},
-      clearBuffer: () => {},
-      resetHistory: () => {}
+      setCursorOffset: () => { },
+      clearBuffer: () => { },
+      resetHistory: () => { }
     });
   }, []);
   const handleExit = useCallback(async () => {
@@ -3628,14 +3628,14 @@ export function REPL({
     }
     const showWorktree = getCurrentWorktreeSession() !== null;
     if (showWorktree) {
-      setExitFlow(<ExitFlow showWorktree onDone={() => {}} onCancel={() => {
+      setExitFlow(<ExitFlow showWorktree onDone={() => { }} onCancel={() => {
         setExitFlow(null);
         setIsExiting(false);
       }} />);
       return;
     }
     const exitMod = await exit.load();
-    const exitFlowResult = await exitMod.call(() => {});
+    const exitFlowResult = await exitMod.call(() => { });
     setExitFlow(exitFlowResult);
     // If call() returned without killing the process (bg session detach),
     // clear isExiting so the UI is usable on reattach. No-op on the normal
@@ -3749,18 +3749,18 @@ export function REPL({
   };
   const messageActionCaps: MessageActionCaps = {
     copy: text =>
-    // setClipboard RETURNS OSC 52 — caller must stdout.write (tmux side-effects load-buffer, but that's tmux-only).
-    void setClipboard(text).then(raw => {
-      if (raw) process.stdout.write(raw);
-      addNotification({
-        // Same key as text-selection copy — repeated copies replace toast, don't queue.
-        key: 'selection-copied',
-        text: 'copied',
-        color: 'success',
-        priority: 'immediate',
-        timeoutMs: 2000
-      });
-    }),
+      // setClipboard RETURNS OSC 52 — caller must stdout.write (tmux side-effects load-buffer, but that's tmux-only).
+      void setClipboard(text).then(raw => {
+        if (raw) process.stdout.write(raw);
+        addNotification({
+          // Same key as text-selection copy — repeated copies replace toast, don't queue.
+          key: 'selection-copied',
+          text: 'copied',
+          color: 'success',
+          priority: 'immediate',
+          timeoutMs: 2000
+        });
+      }),
     edit: async msg => {
       // Same skip-confirm check as /rewind: lossless → direct, else confirm dialog.
       const rawIdx = findRawIndex(msg.uuid);
@@ -3856,14 +3856,14 @@ export function REPL({
   const executeQueuedInput = useCallback(async (queuedCommands: QueuedCommand[]) => {
     await handlePromptSubmit({
       helpers: {
-        setCursorOffset: () => {},
-        clearBuffer: () => {},
-        resetHistory: () => {}
+        setCursorOffset: () => { },
+        clearBuffer: () => { },
+        resetHistory: () => { }
       },
       queryGuard,
       commands,
-      onInputChange: () => {},
-      setPastedContents: () => {},
+      onInputChange: () => { },
+      setPastedContents: () => { },
       setToolJSX,
       getToolUseContext,
       messages,
@@ -3924,8 +3924,8 @@ export function REPL({
       // User hasn't interacted since response ended, check other conditions
       const idleTimeSinceResponse = Date.now() - lastQueryCompletionTime;
       if (!isLoading && !toolJSX &&
-      // Use ref to get current dialog state, avoiding stale closure
-      focusedInputDialogRef.current === undefined && idleTimeSinceResponse >= getGlobalConfig().messageIdleNotifThresholdMs) {
+        // Use ref to get current dialog state, avoiding stale closure
+        focusedInputDialogRef.current === undefined && idleTimeSinceResponse >= getGlobalConfig().messageIdleNotifThresholdMs) {
         void sendNotification({
           message: 'Claude is waiting for your input',
           notificationType: 'idle_prompt'
@@ -3957,13 +3957,13 @@ export function REPL({
       addNotif({
         key: 'idle-return-hint',
         jsx: mode === 'hint_v2' ? <>
-                <Text dimColor>new task? </Text>
-                <Text color="suggestion">/clear</Text>
-                <Text dimColor> to save </Text>
-                <Text color="suggestion">{formattedTokens} tokens</Text>
-              </> : <Text color="warning">
-                new task? /clear to save {formattedTokens} tokens
-              </Text>,
+          <Text dimColor>new task? </Text>
+          <Text color="suggestion">/clear</Text>
+          <Text dimColor> to save </Text>
+          <Text color="suggestion">{formattedTokens} tokens</Text>
+        </> : <Text color="warning">
+          new task? /clear to save {formattedTokens} tokens
+        </Text>,
         priority: 'medium',
         // Persist until submit — the hint fires at T+75min idle, user may
         // not return for hours. removeNotification in useEffect cleanup
@@ -4015,17 +4015,17 @@ export function REPL({
 
   // Voice input integration (VOICE_MODE builds only)
   const voice = feature('VOICE_MODE') ?
-  // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
-  useVoiceIntegration({
-    setInputValueRaw,
-    inputValueRef,
-    insertTextRef
-  }) : {
-    stripTrailing: () => 0,
-    handleKeyEvent: () => {},
-    resetAnchor: () => {},
-    interimRange: null
-  };
+    // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
+    useVoiceIntegration({
+      setInputValueRaw,
+      inputValueRef,
+      insertTextRef
+    }) : {
+      stripTrailing: () => 0,
+      handleKeyEvent: () => { },
+      resetAnchor: () => { },
+      interimRange: null
+    };
   useInboxPoller({
     enabled: isAgentSwarmsEnabled(),
     isLoading,
@@ -4228,11 +4228,11 @@ export function REPL({
       event.stopImmediatePropagation();
     }
   },
-  // Search needs virtual scroll (jumpRef drives VirtualMessageList). [
-  // kills it, so !dumpMode — after [ there's nothing to jump in.
-  {
-    isActive: screen === 'transcript' && virtualScrollActive && !searchOpen && !dumpMode
-  });
+    // Search needs virtual scroll (jumpRef drives VirtualMessageList). [
+    // kills it, so !dumpMode — after [ there's nothing to jump in.
+    {
+      isActive: screen === 'transcript' && virtualScrollActive && !searchOpen && !dumpMode
+    });
   const {
     setQuery: setHighlight,
     scanElement,
@@ -4323,12 +4323,12 @@ export function REPL({
       })();
     }
   },
-  // !searchOpen: typing 'v' or '[' in the search bar is search input, not
-  // a command. No !dumpMode here — v should work after [ (the [ handler
-  // guards itself inline).
-  {
-    isActive: screen === 'transcript' && virtualScrollActive && !searchOpen
-  });
+    // !searchOpen: typing 'v' or '[' in the search bar is search input, not
+    // a command. No !dumpMode here — v should work after [ (the [ handler
+    // guards itself inline).
+    {
+      isActive: screen === 'transcript' && virtualScrollActive && !searchOpen
+    });
 
   // Fresh `less` per transcript entry. Prevents stale highlights matching
   // unrelated normal-mode text (overlay is alt-screen-global) and avoids
@@ -4396,78 +4396,78 @@ export function REPL({
     const transcriptScrollRef = isFullscreenEnvEnabled() && !disableVirtualScroll && !dumpMode ? scrollRef : undefined;
     const transcriptMessagesElement = <Messages messages={transcriptMessages} tools={tools} commands={commands} verbose={true} toolJSX={null} toolUseConfirmQueue={[]} inProgressToolUseIDs={inProgressToolUseIDs} isMessageSelectorVisible={false} conversationId={conversationId} screen={screen} agentDefinitions={agentDefinitions} streamingToolUses={transcriptStreamingToolUses} showAllInTranscript={showAllInTranscript} onOpenRateLimitOptions={handleOpenRateLimitOptions} isLoading={isLoading} hidePastThinking={true} streamingThinking={streamingThinking} scrollRef={transcriptScrollRef} jumpRef={jumpRef} onSearchMatchesChange={onSearchMatchesChange} scanElement={scanElement} setPositions={setPositions} disableRenderCap={dumpMode} />;
     const transcriptToolJSX = toolJSX && <Box flexDirection="column" width="100%">
-        {toolJSX.jsx}
-      </Box>;
+      {toolJSX.jsx}
+    </Box>;
     const transcriptReturn = <KeybindingSetup>
-        <AnimatedTerminalTitle isAnimating={titleIsAnimating} title={terminalTitle} disabled={titleDisabled} noPrefix={showStatusInTerminalTab} />
-        <GlobalKeybindingHandlers {...globalKeybindingProps} />
-        {feature('VOICE_MODE') ? <VoiceKeybindingHandler voiceHandleKeyEvent={voice.handleKeyEvent} stripTrailing={voice.stripTrailing} resetAnchor={voice.resetAnchor} isActive={!toolJSX?.isLocalJSXCommand} /> : null}
-        <CommandKeybindingHandlers onSubmit={onSubmit} isActive={!toolJSX?.isLocalJSXCommand} />
-        {transcriptScrollRef ?
-      // ScrollKeybindingHandler must mount before CancelRequestHandler so
-      // ctrl+c-with-selection copies instead of cancelling the active task.
-      // Its raw useInput handler only stops propagation when a selection
-      // exists — without one, ctrl+c falls through to CancelRequestHandler.
-      <ScrollKeybindingHandler scrollRef={scrollRef}
-      // Yield wheel/ctrl+u/d to UltraplanChoiceDialog's own scroll
-      // handler while the modal is showing.
-      isActive={focusedInputDialog !== 'ultraplan-choice'}
-      // g/G/j/k/ctrl+u/ctrl+d would eat keystrokes the search bar
-      // wants. Off while searching.
-      isModal={!searchOpen}
-      // Manual scroll exits the search context — clear the yellow
-      // current-match marker. Positions are (msg, rowOffset)-keyed;
-      // j/k changes scrollTop so rowOffset is stale → wrong row
-      // gets yellow. Next n/N re-establishes via step()→jump().
-      onScroll={() => jumpRef.current?.disarmSearch()} /> : null}
-        <CancelRequestHandler {...cancelRequestProps} />
-        {transcriptScrollRef ? <FullscreenLayout scrollRef={scrollRef} scrollable={<>
-                {transcriptMessagesElement}
-                {transcriptToolJSX}
-                <SandboxViolationExpandedView />
-              </>} bottom={searchOpen ? <TranscriptSearchBar jumpRef={jumpRef}
-      // Seed was tried (c01578c8) — broke /hello muscle
-      // memory (cursor lands after 'foo', /hello → foohello).
-      // Cancel-restore handles the 'don't lose prior search'
-      // concern differently (onCancel re-applies searchQuery).
-      initialQuery="" count={searchCount} current={searchCurrent} onClose={q => {
-        // Enter — commit. 0-match guard: junk query shouldn't
-        // persist (badge hidden, n/N dead anyway).
-        setSearchQuery(searchCount > 0 ? q : '');
-        setSearchOpen(false);
-        // onCancel path: bar unmounts before its useEffect([query])
-        // can fire with ''. Without this, searchCount stays stale
-        // (n guard at :4956 passes) and VML's matches[] too
-        // (nextMatch walks the old array). Phantom nav, no
-        // highlight. onExit (Enter, q non-empty) still commits.
-        if (!q) {
-          setSearchCount(0);
-          setSearchCurrent(0);
+      <AnimatedTerminalTitle isAnimating={titleIsAnimating} title={terminalTitle} disabled={titleDisabled} noPrefix={showStatusInTerminalTab} />
+      <GlobalKeybindingHandlers {...globalKeybindingProps} />
+      {feature('VOICE_MODE') ? <VoiceKeybindingHandler voiceHandleKeyEvent={voice.handleKeyEvent} stripTrailing={voice.stripTrailing} resetAnchor={voice.resetAnchor} isActive={!toolJSX?.isLocalJSXCommand} /> : null}
+      <CommandKeybindingHandlers onSubmit={onSubmit} isActive={!toolJSX?.isLocalJSXCommand} />
+      {transcriptScrollRef ?
+        // ScrollKeybindingHandler must mount before CancelRequestHandler so
+        // ctrl+c-with-selection copies instead of cancelling the active task.
+        // Its raw useInput handler only stops propagation when a selection
+        // exists — without one, ctrl+c falls through to CancelRequestHandler.
+        <ScrollKeybindingHandler scrollRef={scrollRef}
+          // Yield wheel/ctrl+u/d to UltraplanChoiceDialog's own scroll
+          // handler while the modal is showing.
+          isActive={focusedInputDialog !== 'ultraplan-choice'}
+          // g/G/j/k/ctrl+u/ctrl+d would eat keystrokes the search bar
+          // wants. Off while searching.
+          isModal={!searchOpen}
+          // Manual scroll exits the search context — clear the yellow
+          // current-match marker. Positions are (msg, rowOffset)-keyed;
+          // j/k changes scrollTop so rowOffset is stale → wrong row
+          // gets yellow. Next n/N re-establishes via step()→jump().
+          onScroll={() => jumpRef.current?.disarmSearch()} /> : null}
+      <CancelRequestHandler {...cancelRequestProps} />
+      {transcriptScrollRef ? <FullscreenLayout scrollRef={scrollRef} scrollable={<>
+        {transcriptMessagesElement}
+        {transcriptToolJSX}
+        <SandboxViolationExpandedView />
+      </>} bottom={searchOpen ? <TranscriptSearchBar jumpRef={jumpRef}
+        // Seed was tried (c01578c8) — broke /hello muscle
+        // memory (cursor lands after 'foo', /hello → foohello).
+        // Cancel-restore handles the 'don't lose prior search'
+        // concern differently (onCancel re-applies searchQuery).
+        initialQuery="" count={searchCount} current={searchCurrent} onClose={q => {
+          // Enter — commit. 0-match guard: junk query shouldn't
+          // persist (badge hidden, n/N dead anyway).
+          setSearchQuery(searchCount > 0 ? q : '');
+          setSearchOpen(false);
+          // onCancel path: bar unmounts before its useEffect([query])
+          // can fire with ''. Without this, searchCount stays stale
+          // (n guard at :4956 passes) and VML's matches[] too
+          // (nextMatch walks the old array). Phantom nav, no
+          // highlight. onExit (Enter, q non-empty) still commits.
+          if (!q) {
+            setSearchCount(0);
+            setSearchCurrent(0);
+            jumpRef.current?.setSearchQuery('');
+          }
+        }} onCancel={() => {
+          // Esc/ctrl+c/ctrl+g — undo. Bar's effect last fired
+          // with whatever was typed. searchQuery (REPL state)
+          // is unchanged since / (onClose = commit, didn't run).
+          // Two VML calls: '' restores anchor (0-match else-
+          // branch), then searchQuery re-scans from anchor's
+          // nearest. Both synchronous — one React batch.
+          // setHighlight explicit: REPL's sync-effect dep is
+          // searchQuery (unchanged), wouldn't re-fire.
+          setSearchOpen(false);
           jumpRef.current?.setSearchQuery('');
-        }
-      }} onCancel={() => {
-        // Esc/ctrl+c/ctrl+g — undo. Bar's effect last fired
-        // with whatever was typed. searchQuery (REPL state)
-        // is unchanged since / (onClose = commit, didn't run).
-        // Two VML calls: '' restores anchor (0-match else-
-        // branch), then searchQuery re-scans from anchor's
-        // nearest. Both synchronous — one React batch.
-        // setHighlight explicit: REPL's sync-effect dep is
-        // searchQuery (unchanged), wouldn't re-fire.
-        setSearchOpen(false);
-        jumpRef.current?.setSearchQuery('');
-        jumpRef.current?.setSearchQuery(searchQuery);
-        setHighlight(searchQuery);
-      }} setHighlight={setHighlight} /> : <TranscriptModeFooter showAllInTranscript={showAllInTranscript} virtualScroll={true} status={editorStatus || undefined} searchBadge={searchQuery && searchCount > 0 ? {
-        current: searchCurrent,
-        count: searchCount
-      } : undefined} />} /> : <>
-            {transcriptMessagesElement}
-            {transcriptToolJSX}
-            <SandboxViolationExpandedView />
-            <TranscriptModeFooter showAllInTranscript={showAllInTranscript} virtualScroll={false} suppressShowAll={dumpMode} status={editorStatus || undefined} />
-          </>}
-      </KeybindingSetup>;
+          jumpRef.current?.setSearchQuery(searchQuery);
+          setHighlight(searchQuery);
+        }} setHighlight={setHighlight} /> : <TranscriptModeFooter showAllInTranscript={showAllInTranscript} virtualScroll={true} status={editorStatus || undefined} searchBadge={searchQuery && searchCount > 0 ? {
+          current: searchCurrent,
+          count: searchCount
+        } : undefined} />} /> : <>
+        {transcriptMessagesElement}
+        {transcriptToolJSX}
+        <SandboxViolationExpandedView />
+        <TranscriptModeFooter showAllInTranscript={showAllInTranscript} virtualScroll={false} suppressShowAll={dumpMode} status={editorStatus || undefined} />
+      </>}
+    </KeybindingSetup>;
     // The virtual-scroll branch (FullscreenLayout above) needs
     // <AlternateScreen>'s <Box height={rows}> constraint — without it,
     // ScrollBox's flexGrow has no ceiling, viewport = content height,
@@ -4478,8 +4478,8 @@ export function REPL({
     // unwrapped — it wants native terminal scrollback.
     if (transcriptScrollRef) {
       return <AlternateScreen mouseTracking={isMouseTrackingEnabled()}>
-          {transcriptReturn}
-        </AlternateScreen>;
+        {transcriptReturn}
+      </AlternateScreen>;
     }
     return transcriptReturn;
   }
@@ -4541,11 +4541,11 @@ export function REPL({
   // early return above wraps its virtual-scroll branch the same way; only
   // the 30-cap dump branch stays unwrapped for native terminal scrollback.
   const mainReturn = <KeybindingSetup>
-      <AnimatedTerminalTitle isAnimating={titleIsAnimating} title={terminalTitle} disabled={titleDisabled} noPrefix={showStatusInTerminalTab} />
-      <GlobalKeybindingHandlers {...globalKeybindingProps} />
-      {feature('VOICE_MODE') ? <VoiceKeybindingHandler voiceHandleKeyEvent={voice.handleKeyEvent} stripTrailing={voice.stripTrailing} resetAnchor={voice.resetAnchor} isActive={!toolJSX?.isLocalJSXCommand} /> : null}
-      <CommandKeybindingHandlers onSubmit={onSubmit} isActive={!toolJSX?.isLocalJSXCommand} />
-      {/* ScrollKeybindingHandler must mount before CancelRequestHandler so
+    <AnimatedTerminalTitle isAnimating={titleIsAnimating} title={terminalTitle} disabled={titleDisabled} noPrefix={showStatusInTerminalTab} />
+    <GlobalKeybindingHandlers {...globalKeybindingProps} />
+    {feature('VOICE_MODE') ? <VoiceKeybindingHandler voiceHandleKeyEvent={voice.handleKeyEvent} stripTrailing={voice.stripTrailing} resetAnchor={voice.resetAnchor} isActive={!toolJSX?.isLocalJSXCommand} /> : null}
+    <CommandKeybindingHandlers onSubmit={onSubmit} isActive={!toolJSX?.isLocalJSXCommand} />
+    {/* ScrollKeybindingHandler must mount before CancelRequestHandler so
           ctrl+c-with-selection copies instead of cancelling the active task.
           Its raw useInput handler only stops propagation when a selection
           exists — without one, ctrl+c falls through to CancelRequestHandler.
@@ -4553,40 +4553,40 @@ export function REPL({
           the modal's inner ScrollBox is not keyboard-driven. onScroll
           stays suppressed while a modal is showing so scroll doesn't
           stamp divider/pill state. */}
-      <ScrollKeybindingHandler scrollRef={scrollRef} isActive={isFullscreenEnvEnabled() && (centeredModal != null || !focusedInputDialog || focusedInputDialog === 'tool-permission')} onScroll={centeredModal || toolPermissionOverlay || viewedAgentTask ? undefined : composedOnScroll} />
-      {feature('MESSAGE_ACTIONS') && isFullscreenEnvEnabled() && !disableMessageActions ? <MessageActionsKeybindings handlers={messageActionHandlers} isActive={cursor !== null} /> : null}
-      <CancelRequestHandler {...cancelRequestProps} />
-      <MCPConnectionManager key={remountKey} dynamicMcpConfig={dynamicMcpConfig} isStrictMcpConfig={strictMcpConfig}>
-        <FullscreenLayout scrollRef={scrollRef} overlay={toolPermissionOverlay} bottomFloat={feature('BUDDY') && companionVisible && !companionNarrow ? <CompanionFloatingBubble /> : undefined} modal={centeredModal} modalScrollRef={modalScrollRef} dividerYRef={dividerYRef} hidePill={!!viewedAgentTask} hideSticky={!!viewedTeammateTask} newMessageCount={unseenDivider?.count ?? 0} onPillClick={() => {
+    <ScrollKeybindingHandler scrollRef={scrollRef} isActive={isFullscreenEnvEnabled() && (centeredModal != null || !focusedInputDialog || focusedInputDialog === 'tool-permission')} onScroll={centeredModal || toolPermissionOverlay || viewedAgentTask ? undefined : composedOnScroll} />
+    {feature('MESSAGE_ACTIONS') && isFullscreenEnvEnabled() && !disableMessageActions ? <MessageActionsKeybindings handlers={messageActionHandlers} isActive={cursor !== null} /> : null}
+    <CancelRequestHandler {...cancelRequestProps} />
+    <MCPConnectionManager key={remountKey} dynamicMcpConfig={dynamicMcpConfig} isStrictMcpConfig={strictMcpConfig}>
+      <FullscreenLayout scrollRef={scrollRef} overlay={toolPermissionOverlay} bottomFloat={feature('BUDDY') && companionVisible && !companionNarrow ? <CompanionFloatingBubble /> : undefined} modal={centeredModal} modalScrollRef={modalScrollRef} dividerYRef={dividerYRef} hidePill={!!viewedAgentTask} hideSticky={!!viewedTeammateTask} newMessageCount={unseenDivider?.count ?? 0} onPillClick={() => {
         setCursor(null);
         jumpToNew(scrollRef.current);
       }} scrollable={<>
-              <TeammateViewHeader />
-              <Messages messages={displayedMessages} tools={tools} commands={commands} verbose={verbose} toolJSX={toolJSX} toolUseConfirmQueue={toolUseConfirmQueue} inProgressToolUseIDs={viewedTeammateTask ? viewedTeammateTask.inProgressToolUseIDs ?? new Set() : inProgressToolUseIDs} isMessageSelectorVisible={isMessageSelectorVisible} conversationId={conversationId} screen={screen} streamingToolUses={streamingToolUses} showAllInTranscript={showAllInTranscript} agentDefinitions={agentDefinitions} onOpenRateLimitOptions={handleOpenRateLimitOptions} isLoading={isLoading} streamingText={isLoading && !viewedAgentTask ? visibleStreamingText : null} isBriefOnly={viewedAgentTask ? false : isBriefOnly} unseenDivider={viewedAgentTask ? undefined : unseenDivider} scrollRef={isFullscreenEnvEnabled() ? scrollRef : undefined} trackStickyPrompt={isFullscreenEnvEnabled() ? true : undefined} cursor={cursor} setCursor={setCursor} cursorNavRef={cursorNavRef} />
-              <AwsAuthStatusBox />
-              {/* Hide the processing placeholder while a modal is showing —
+        <TeammateViewHeader />
+        <Messages messages={displayedMessages} tools={tools} commands={commands} verbose={verbose} toolJSX={toolJSX} toolUseConfirmQueue={toolUseConfirmQueue} inProgressToolUseIDs={viewedTeammateTask ? viewedTeammateTask.inProgressToolUseIDs ?? new Set() : inProgressToolUseIDs} isMessageSelectorVisible={isMessageSelectorVisible} conversationId={conversationId} screen={screen} streamingToolUses={streamingToolUses} showAllInTranscript={showAllInTranscript} agentDefinitions={agentDefinitions} onOpenRateLimitOptions={handleOpenRateLimitOptions} isLoading={isLoading} streamingText={isLoading && !viewedAgentTask ? visibleStreamingText : null} isBriefOnly={viewedAgentTask ? false : isBriefOnly} unseenDivider={viewedAgentTask ? undefined : unseenDivider} scrollRef={isFullscreenEnvEnabled() ? scrollRef : undefined} trackStickyPrompt={isFullscreenEnvEnabled() ? true : undefined} cursor={cursor} setCursor={setCursor} cursorNavRef={cursorNavRef} />
+        <AwsAuthStatusBox />
+        {/* Hide the processing placeholder while a modal is showing —
                   it would sit at the last visible transcript row right above
                   the ▔ divider, showing "❯ /config" as redundant clutter
                   (the modal IS the /config UI). Outside modals it stays so
                   the user sees their input echoed while Claude processes. */}
-              {!disabled && placeholderText && !centeredModal && <UserTextMessage param={{
+        {!disabled && placeholderText && !centeredModal && <UserTextMessage param={{
           text: placeholderText,
           type: 'text'
         }} addMargin={true} verbose={verbose} />}
-              {toolJSX && !(toolJSX.isLocalJSXCommand && toolJSX.isImmediate) && !toolJsxCentered && <Box flexDirection="column" width="100%">
-                    {toolJSX.jsx}
-                  </Box>}
-              {"external" === 'ant' && <TungstenLiveMonitor />}
-              {feature('WEB_BROWSER_TOOL') ? WebBrowserPanelModule && <WebBrowserPanelModule.WebBrowserPanel /> : null}
-              <Box flexGrow={1} />
-              {showSpinner && <SpinnerWithVerb mode={streamMode} spinnerTip={spinnerTip} responseLengthRef={responseLengthRef} apiMetricsRef={apiMetricsRef} overrideMessage={spinnerMessage} spinnerSuffix={stopHookSpinnerSuffix} verbose={verbose} loadingStartTimeRef={loadingStartTimeRef} totalPausedMsRef={totalPausedMsRef} pauseStartTimeRef={pauseStartTimeRef} overrideColor={spinnerColor} overrideShimmerColor={spinnerShimmerColor} hasActiveTools={inProgressToolUseIDs.size > 0} leaderIsIdle={!isLoading} />}
-              {!showSpinner && !isLoading && !userInputOnProcessing && !hasRunningTeammates && isBriefOnly && !viewedAgentTask && <BriefIdleStatus />}
-              {isFullscreenEnvEnabled() && <PromptInputQueuedCommands />}
-            </>} bottom={<Box flexDirection={feature('BUDDY') && companionNarrow ? 'column' : 'row'} width="100%" alignItems={feature('BUDDY') && companionNarrow ? undefined : 'flex-end'}>
-              {feature('BUDDY') && companionNarrow && isFullscreenEnvEnabled() && companionVisible ? <CompanionSprite /> : null}
-              <Box flexDirection="column" flexGrow={1}>
-                {permissionStickyFooter}
-                {/* Immediate local-jsx commands (/btw, /sandbox, /assistant,
+        {toolJSX && !(toolJSX.isLocalJSXCommand && toolJSX.isImmediate) && !toolJsxCentered && <Box flexDirection="column" width="100%">
+          {toolJSX.jsx}
+        </Box>}
+        {"external" === 'ant' && <TungstenLiveMonitor />}
+        {feature('WEB_BROWSER_TOOL') ? WebBrowserPanelModule && <WebBrowserPanelModule.WebBrowserPanel /> : null}
+        <Box flexGrow={1} />
+        {showSpinner && <SpinnerWithVerb mode={streamMode} spinnerTip={spinnerTip} responseLengthRef={responseLengthRef} apiMetricsRef={apiMetricsRef} overrideMessage={spinnerMessage} spinnerSuffix={stopHookSpinnerSuffix} verbose={verbose} loadingStartTimeRef={loadingStartTimeRef} totalPausedMsRef={totalPausedMsRef} pauseStartTimeRef={pauseStartTimeRef} overrideColor={spinnerColor} overrideShimmerColor={spinnerShimmerColor} hasActiveTools={inProgressToolUseIDs.size > 0} leaderIsIdle={!isLoading} />}
+        {!showSpinner && !isLoading && !userInputOnProcessing && !hasRunningTeammates && isBriefOnly && !viewedAgentTask && <BriefIdleStatus />}
+        {isFullscreenEnvEnabled() && <PromptInputQueuedCommands />}
+      </>} bottom={<Box flexDirection={feature('BUDDY') && companionNarrow ? 'column' : 'row'} width="100%" alignItems={feature('BUDDY') && companionNarrow ? undefined : 'flex-end'}>
+        {feature('BUDDY') && companionNarrow && isFullscreenEnvEnabled() && companionVisible ? <CompanionSprite /> : null}
+        <Box flexDirection="column" flexGrow={1}>
+          {permissionStickyFooter}
+          {/* Immediate local-jsx commands (/btw, /sandbox, /assistant,
                   /issue) render here, NOT inside scrollable. They stay mounted
                   while the main conversation streams behind them, so ScrollBox
                   relayouts on each new message would drag them around. bottom
@@ -4595,13 +4595,13 @@ export function REPL({
                   stays in scrollable: the main loop is paused so no jiggle,
                   and their tall content (DiffDetailView renders up to 400
                   lines with no internal scroll) needs the outer ScrollBox. */}
-                {toolJSX?.isLocalJSXCommand && toolJSX.isImmediate && !toolJsxCentered && <Box flexDirection="column" width="100%">
-                      {toolJSX.jsx}
-                    </Box>}
-                {!showSpinner && !toolJSX?.isLocalJSXCommand && showExpandedTodos && tasksV2 && tasksV2.length > 0 && <Box width="100%" flexDirection="column">
-                      <TaskListV2 tasks={tasksV2} isStandalone={true} />
-                    </Box>}
-                {focusedInputDialog === 'sandbox-permission' && <SandboxPermissionRequest key={sandboxPermissionRequestQueue[0]!.hostPattern.host} hostPattern={sandboxPermissionRequestQueue[0]!.hostPattern} onUserResponse={(response: {
+          {toolJSX?.isLocalJSXCommand && toolJSX.isImmediate && !toolJsxCentered && <Box flexDirection="column" width="100%">
+            {toolJSX.jsx}
+          </Box>}
+          {!showSpinner && !toolJSX?.isLocalJSXCommand && showExpandedTodos && tasksV2 && tasksV2.length > 0 && <Box width="100%" flexDirection="column">
+            <TaskListV2 tasks={tasksV2} isStandalone={true} />
+          </Box>}
+          {focusedInputDialog === 'sandbox-permission' && <SandboxPermissionRequest key={sandboxPermissionRequestQueue[0]!.hostPattern.host} hostPattern={sandboxPermissionRequestQueue[0]!.hostPattern} onUserResponse={(response: {
             allow: boolean;
             persistToSettings: boolean;
           }) => {
@@ -4650,7 +4650,7 @@ export function REPL({
               sandboxBridgeCleanupRef.current.delete(approvedHost);
             }
           }} />}
-                {focusedInputDialog === 'prompt' && <PromptDialog key={promptQueue[0]!.request.prompt} title={promptQueue[0]!.title} toolInputSummary={promptQueue[0]!.toolInputSummary} request={promptQueue[0]!.request} onRespond={selectedKey => {
+          {focusedInputDialog === 'prompt' && <PromptDialog key={promptQueue[0]!.request.prompt} title={promptQueue[0]!.title} toolInputSummary={promptQueue[0]!.toolInputSummary} request={promptQueue[0]!.request} onRespond={selectedKey => {
             const item = promptQueue[0];
             if (!item) return;
             item.resolve({
@@ -4664,12 +4664,12 @@ export function REPL({
             item.reject(new Error('Prompt cancelled by user'));
             setPromptQueue(([, ...tail]) => tail);
           }} />}
-                {/* Show pending indicator on worker while waiting for leader approval */}
-                {pendingWorkerRequest && <WorkerPendingPermission toolName={pendingWorkerRequest.toolName} description={pendingWorkerRequest.description} />}
-                {/* Show pending indicator for sandbox permission on worker side */}
-                {pendingSandboxRequest && <WorkerPendingPermission toolName="Network Access" description={`Waiting for leader to approve network access to ${pendingSandboxRequest.host}`} />}
-                {/* Worker sandbox permission requests from swarm workers */}
-                {focusedInputDialog === 'worker-sandbox-permission' && <SandboxPermissionRequest key={workerSandboxPermissions.queue[0]!.requestId} hostPattern={{
+          {/* Show pending indicator on worker while waiting for leader approval */}
+          {pendingWorkerRequest && <WorkerPendingPermission toolName={pendingWorkerRequest.toolName} description={pendingWorkerRequest.description} />}
+          {/* Show pending indicator for sandbox permission on worker side */}
+          {pendingSandboxRequest && <WorkerPendingPermission toolName="Network Access" description={`Waiting for leader to approve network access to ${pendingSandboxRequest.host}`} />}
+          {/* Worker sandbox permission requests from swarm workers */}
+          {focusedInputDialog === 'worker-sandbox-permission' && <SandboxPermissionRequest key={workerSandboxPermissions.queue[0]!.requestId} hostPattern={{
             host: workerSandboxPermissions.queue[0]!.host,
             port: undefined
           } as NetworkHostPattern} onUserResponse={(response: {
@@ -4713,7 +4713,7 @@ export function REPL({
               }
             }));
           }} />}
-                {focusedInputDialog === 'elicitation' && <ElicitationDialog key={elicitation.queue[0]!.serverName + ':' + String(elicitation.queue[0]!.requestId)} event={elicitation.queue[0]!} onResponse={(action, content) => {
+          {focusedInputDialog === 'elicitation' && <ElicitationDialog key={elicitation.queue[0]!.serverName + ':' + String(elicitation.queue[0]!.requestId)} event={elicitation.queue[0]!} onResponse={(action, content) => {
             const currentRequest = elicitation.queue[0];
             if (!currentRequest) return;
             // Call respond callback to resolve Promise
@@ -4742,7 +4742,7 @@ export function REPL({
             }));
             currentRequest?.onWaitingDismiss?.(action);
           }} />}
-                {focusedInputDialog === 'cost' && <CostThresholdDialog onDone={() => {
+          {focusedInputDialog === 'cost' && <CostThresholdDialog onDone={() => {
             setShowCostDialog(false);
             setHaveShownCostDialog(true);
             saveGlobalConfig(current => ({
@@ -4751,7 +4751,7 @@ export function REPL({
             }));
             logEvent('tengu_cost_threshold_acknowledged', {});
           }} />}
-                {focusedInputDialog === 'idle-return' && idleReturnPending && <IdleReturnDialog idleMinutes={idleReturnPending.idleMinutes} totalInputTokens={getTotalInputTokens()} onDone={async action => {
+          {focusedInputDialog === 'idle-return' && idleReturnPending && <IdleReturnDialog idleMinutes={idleReturnPending.idleMinutes} totalInputTokens={getTotalInputTokens()} onDone={async action => {
             const pending = idleReturnPending;
             setIdleReturnPending(null);
             logEvent('tengu_idle_return_action', {
@@ -4793,13 +4793,13 @@ export function REPL({
             }
             skipIdleCheckRef.current = true;
             void onSubmitRef.current(pending.input, {
-              setCursorOffset: () => {},
-              clearBuffer: () => {},
-              resetHistory: () => {}
+              setCursorOffset: () => { },
+              clearBuffer: () => { },
+              resetHistory: () => { }
             });
           }} />}
-                {focusedInputDialog === 'ide-onboarding' && <IdeOnboardingDialog onDone={() => setShowIdeOnboarding(false)} installationStatus={ideInstallationStatus} />}
-                {"external" === 'ant' && focusedInputDialog === 'model-switch' && AntModelSwitchCallout && <AntModelSwitchCallout onDone={(selection: string, modelAlias?: string) => {
+          {focusedInputDialog === 'ide-onboarding' && <IdeOnboardingDialog onDone={() => setShowIdeOnboarding(false)} installationStatus={ideInstallationStatus} />}
+          {"external" === 'ant' && focusedInputDialog === 'model-switch' && AntModelSwitchCallout && <AntModelSwitchCallout onDone={(selection: string, modelAlias?: string) => {
             setShowModelSwitchCallout(false);
             if (selection === 'switch' && modelAlias) {
               setAppState(prev => ({
@@ -4809,8 +4809,8 @@ export function REPL({
               }));
             }
           }} />}
-                {"external" === 'ant' && focusedInputDialog === 'undercover-callout' && UndercoverAutoCallout && <UndercoverAutoCallout onDone={() => setShowUndercoverCallout(false)} />}
-                {focusedInputDialog === 'effort-callout' && <EffortCallout model={mainLoopModel} onDone={selection => {
+          {"external" === 'ant' && focusedInputDialog === 'undercover-callout' && UndercoverAutoCallout && <UndercoverAutoCallout onDone={() => setShowUndercoverCallout(false)} />}
+          {focusedInputDialog === 'effort-callout' && <EffortCallout model={mainLoopModel} onDone={selection => {
             setShowEffortCallout(false);
             if (selection !== 'dismiss') {
               setAppState(prev => ({
@@ -4819,7 +4819,7 @@ export function REPL({
               }));
             }
           }} />}
-                {focusedInputDialog === 'remote-callout' && <RemoteCallout onDone={selection => {
+          {focusedInputDialog === 'remote-callout' && <RemoteCallout onDone={selection => {
             setAppState(prev => {
               if (!prev.showRemoteCallout) return prev;
               return {
@@ -4834,17 +4834,17 @@ export function REPL({
             });
           }} />}
 
-                {exitFlow}
+          {exitFlow}
 
-                {focusedInputDialog === 'plugin-hint' && hintRecommendation && <PluginHintMenu pluginName={hintRecommendation.pluginName} pluginDescription={hintRecommendation.pluginDescription} marketplaceName={hintRecommendation.marketplaceName} sourceCommand={hintRecommendation.sourceCommand} onResponse={handleHintResponse} />}
+          {focusedInputDialog === 'plugin-hint' && hintRecommendation && <PluginHintMenu pluginName={hintRecommendation.pluginName} pluginDescription={hintRecommendation.pluginDescription} marketplaceName={hintRecommendation.marketplaceName} sourceCommand={hintRecommendation.sourceCommand} onResponse={handleHintResponse} />}
 
-                {focusedInputDialog === 'lsp-recommendation' && lspRecommendation && <LspRecommendationMenu pluginName={lspRecommendation.pluginName} pluginDescription={lspRecommendation.pluginDescription} fileExtension={lspRecommendation.fileExtension} onResponse={handleLspResponse} />}
+          {focusedInputDialog === 'lsp-recommendation' && lspRecommendation && <LspRecommendationMenu pluginName={lspRecommendation.pluginName} pluginDescription={lspRecommendation.pluginDescription} fileExtension={lspRecommendation.fileExtension} onResponse={handleLspResponse} />}
 
-                {focusedInputDialog === 'desktop-upsell' && <DesktopUpsellStartup onDone={() => setShowDesktopUpsellStartup(false)} />}
+          {focusedInputDialog === 'desktop-upsell' && <DesktopUpsellStartup onDone={() => setShowDesktopUpsellStartup(false)} />}
 
-                {feature('ULTRAPLAN') ? focusedInputDialog === 'ultraplan-choice' && ultraplanPendingChoice && <UltraplanChoiceDialog plan={ultraplanPendingChoice.plan} sessionId={ultraplanPendingChoice.sessionId} taskId={ultraplanPendingChoice.taskId} setMessages={setMessages} readFileState={readFileState.current} getAppState={() => store.getState()} setConversationId={setConversationId} /> : null}
+          {feature('ULTRAPLAN') ? focusedInputDialog === 'ultraplan-choice' && ultraplanPendingChoice && <UltraplanChoiceDialog plan={ultraplanPendingChoice.plan} sessionId={ultraplanPendingChoice.sessionId} taskId={ultraplanPendingChoice.taskId} setMessages={setMessages} readFileState={readFileState.current} getAppState={() => store.getState()} setConversationId={setConversationId} /> : null}
 
-                {feature('ULTRAPLAN') ? focusedInputDialog === 'ultraplan-launch' && ultraplanLaunchPending && <UltraplanLaunchDialog onChoice={(choice, opts) => {
+          {feature('ULTRAPLAN') ? focusedInputDialog === 'ultraplan-launch' && ultraplanLaunchPending && <UltraplanLaunchDialog onChoice={(choice, opts) => {
             const blurb = ultraplanLaunchPending.blurb;
             setAppState(prev => prev.ultraplanLaunchPending ? {
               ...prev,
@@ -4884,26 +4884,26 @@ export function REPL({
             }).then(appendStdout).catch(logError);
           }} /> : null}
 
-                {mrRender()}
+          {mrRender()}
 
-                {!toolJSX?.shouldHidePromptInput && !focusedInputDialog && !isExiting && !disabled && !cursor && <>
-                      {autoRunIssueReason && <AutoRunIssueNotification onRun={handleAutoRunIssue} onCancel={handleCancelAutoRunIssue} reason={getAutoRunIssueReasonText(autoRunIssueReason)} />}
-                      {postCompactSurvey.state !== 'closed' ? <FeedbackSurvey state={postCompactSurvey.state} lastResponse={postCompactSurvey.lastResponse} handleSelect={postCompactSurvey.handleSelect} inputValue={inputValue} setInputValue={setInputValue} onRequestFeedback={handleSurveyRequestFeedback} /> : memorySurvey.state !== 'closed' ? <FeedbackSurvey state={memorySurvey.state} lastResponse={memorySurvey.lastResponse} handleSelect={memorySurvey.handleSelect} handleTranscriptSelect={memorySurvey.handleTranscriptSelect} inputValue={inputValue} setInputValue={setInputValue} onRequestFeedback={handleSurveyRequestFeedback} message="How well did Claude use its memory? (optional)" /> : <FeedbackSurvey state={feedbackSurvey.state} lastResponse={feedbackSurvey.lastResponse} handleSelect={feedbackSurvey.handleSelect} handleTranscriptSelect={feedbackSurvey.handleTranscriptSelect} inputValue={inputValue} setInputValue={setInputValue} onRequestFeedback={didAutoRunIssueRef.current ? undefined : handleSurveyRequestFeedback} />}
-                      {/* Frustration-triggered transcript sharing prompt */}
-                      {frustrationDetection.state !== 'closed' && <FeedbackSurvey state={frustrationDetection.state} lastResponse={null} handleSelect={() => {}} handleTranscriptSelect={frustrationDetection.handleTranscriptSelect} inputValue={inputValue} setInputValue={setInputValue} />}
-                      {/* Skill improvement survey - appears when improvements detected (ant-only) */}
-                      {"external" === 'ant' && skillImprovementSurvey.suggestion && <SkillImprovementSurvey isOpen={skillImprovementSurvey.isOpen} skillName={skillImprovementSurvey.suggestion.skillName} updates={skillImprovementSurvey.suggestion.updates} handleSelect={skillImprovementSurvey.handleSelect} inputValue={inputValue} setInputValue={setInputValue} />}
-                      {showIssueFlagBanner && <IssueFlagBanner />}
-                      {}
-                      <PromptInput debug={debug} ideSelection={ideSelection} hasSuppressedDialogs={!!hasSuppressedDialogs} isLocalJSXCommandActive={isShowingLocalJSXCommand} getToolUseContext={getToolUseContext} toolPermissionContext={toolPermissionContext} setToolPermissionContext={setToolPermissionContext} apiKeyStatus={apiKeyStatus} commands={commands} agents={agentDefinitions.activeAgents} isLoading={isLoading} onExit={handleExit} verbose={verbose} messages={messages} onAutoUpdaterResult={setAutoUpdaterResult} autoUpdaterResult={autoUpdaterResult} input={inputValue} onInputChange={setInputValue} mode={inputMode} onModeChange={setInputMode} stashedPrompt={stashedPrompt} setStashedPrompt={setStashedPrompt} submitCount={submitCount} onShowMessageSelector={handleShowMessageSelector} onMessageActionsEnter={
-            // Works during isLoading — edit cancels first; uuid selection survives appends.
-            feature('MESSAGE_ACTIONS') && isFullscreenEnvEnabled() && !disableMessageActions ? enterMessageActions : undefined} mcpClients={mcpClients} pastedContents={pastedContents} setPastedContents={setPastedContents} vimMode={vimMode} setVimMode={setVimMode} showBashesDialog={showBashesDialog} setShowBashesDialog={setShowBashesDialog} onSubmit={onSubmit} onAgentSubmit={onAgentSubmit} isSearchingHistory={isSearchingHistory} setIsSearchingHistory={setIsSearchingHistory} helpOpen={isHelpOpen} setHelpOpen={setIsHelpOpen} insertTextRef={feature('VOICE_MODE') ? insertTextRef : undefined} voiceInterimRange={voice.interimRange} />
-                      <SessionBackgroundHint onBackgroundSession={handleBackgroundSession} isLoading={isLoading} />
-                    </>}
-                {cursor &&
-          // inputValue is REPL state; typed text survives the round-trip.
-          <MessageActionsBar cursor={cursor} />}
-                {focusedInputDialog === 'message-selector' && <MessageSelector messages={messages} preselectedMessage={messageSelectorPreselect} onPreRestore={onCancel} onRestoreCode={async (message: UserMessage) => {
+          {!toolJSX?.shouldHidePromptInput && !focusedInputDialog && !isExiting && !disabled && !cursor && <>
+            {autoRunIssueReason && <AutoRunIssueNotification onRun={handleAutoRunIssue} onCancel={handleCancelAutoRunIssue} reason={getAutoRunIssueReasonText(autoRunIssueReason)} />}
+            {postCompactSurvey.state !== 'closed' ? <FeedbackSurvey state={postCompactSurvey.state} lastResponse={postCompactSurvey.lastResponse} handleSelect={postCompactSurvey.handleSelect} inputValue={inputValue} setInputValue={setInputValue} onRequestFeedback={handleSurveyRequestFeedback} /> : memorySurvey.state !== 'closed' ? <FeedbackSurvey state={memorySurvey.state} lastResponse={memorySurvey.lastResponse} handleSelect={memorySurvey.handleSelect} handleTranscriptSelect={memorySurvey.handleTranscriptSelect} inputValue={inputValue} setInputValue={setInputValue} onRequestFeedback={handleSurveyRequestFeedback} message="How well did Claude use its memory? (optional)" /> : <FeedbackSurvey state={feedbackSurvey.state} lastResponse={feedbackSurvey.lastResponse} handleSelect={feedbackSurvey.handleSelect} handleTranscriptSelect={feedbackSurvey.handleTranscriptSelect} inputValue={inputValue} setInputValue={setInputValue} onRequestFeedback={didAutoRunIssueRef.current ? undefined : handleSurveyRequestFeedback} />}
+            {/* Frustration-triggered transcript sharing prompt */}
+            {frustrationDetection.state !== 'closed' && <FeedbackSurvey state={frustrationDetection.state} lastResponse={null} handleSelect={() => { }} handleTranscriptSelect={frustrationDetection.handleTranscriptSelect} inputValue={inputValue} setInputValue={setInputValue} />}
+            {/* Skill improvement survey - appears when improvements detected (ant-only) */}
+            {"external" === 'ant' && skillImprovementSurvey.suggestion && <SkillImprovementSurvey isOpen={skillImprovementSurvey.isOpen} skillName={skillImprovementSurvey.suggestion.skillName} updates={skillImprovementSurvey.suggestion.updates} handleSelect={skillImprovementSurvey.handleSelect} inputValue={inputValue} setInputValue={setInputValue} />}
+            {showIssueFlagBanner && <IssueFlagBanner />}
+            { }
+            <PromptInput debug={debug} ideSelection={ideSelection} hasSuppressedDialogs={!!hasSuppressedDialogs} isLocalJSXCommandActive={isShowingLocalJSXCommand} getToolUseContext={getToolUseContext} toolPermissionContext={toolPermissionContext} setToolPermissionContext={setToolPermissionContext} apiKeyStatus={apiKeyStatus} commands={commands} agents={agentDefinitions.activeAgents} isLoading={isLoading} onExit={handleExit} verbose={verbose} messages={messages} onAutoUpdaterResult={setAutoUpdaterResult} autoUpdaterResult={autoUpdaterResult} input={inputValue} onInputChange={setInputValue} mode={inputMode} onModeChange={setInputMode} stashedPrompt={stashedPrompt} setStashedPrompt={setStashedPrompt} submitCount={submitCount} onShowMessageSelector={handleShowMessageSelector} onMessageActionsEnter={
+              // Works during isLoading — edit cancels first; uuid selection survives appends.
+              feature('MESSAGE_ACTIONS') && isFullscreenEnvEnabled() && !disableMessageActions ? enterMessageActions : undefined} mcpClients={mcpClients} pastedContents={pastedContents} setPastedContents={setPastedContents} vimMode={vimMode} setVimMode={setVimMode} showBashesDialog={showBashesDialog} setShowBashesDialog={setShowBashesDialog} onSubmit={onSubmit} onAgentSubmit={onAgentSubmit} isSearchingHistory={isSearchingHistory} setIsSearchingHistory={setIsSearchingHistory} helpOpen={isHelpOpen} setHelpOpen={setIsHelpOpen} insertTextRef={feature('VOICE_MODE') ? insertTextRef : undefined} voiceInterimRange={voice.interimRange} />
+            <SessionBackgroundHint onBackgroundSession={handleBackgroundSession} isLoading={isLoading} />
+          </>}
+          {cursor &&
+            // inputValue is REPL state; typed text survives the round-trip.
+            <MessageActionsBar cursor={cursor} />}
+          {focusedInputDialog === 'message-selector' && <MessageSelector messages={messages} preselectedMessage={messageSelectorPreselect} onPreRestore={onCancel} onRestoreCode={async (message: UserMessage) => {
             await fileHistoryRewind((updater: (prev: FileHistoryState) => FileHistoryState) => {
               setAppState(prev => ({
                 ...prev,
@@ -4985,16 +4985,16 @@ export function REPL({
             setIsMessageSelectorVisible(false);
             setMessageSelectorPreselect(undefined);
           }} />}
-                {"external" === 'ant' && <DevBar />}
-              </Box>
-              {feature('BUDDY') && !(companionNarrow && isFullscreenEnvEnabled()) && companionVisible ? <CompanionSprite /> : null}
-            </Box>} />
-      </MCPConnectionManager>
-    </KeybindingSetup>;
+          {"external" === 'ant' && <DevBar />}
+        </Box>
+        {feature('BUDDY') && !(companionNarrow && isFullscreenEnvEnabled()) && companionVisible ? <CompanionSprite /> : null}
+      </Box>} />
+    </MCPConnectionManager>
+  </KeybindingSetup>;
   if (isFullscreenEnvEnabled()) {
     return <AlternateScreen mouseTracking={isMouseTrackingEnabled()}>
-        {mainReturn}
-      </AlternateScreen>;
+      {mainReturn}
+    </AlternateScreen>;
   }
   return mainReturn;
 }
