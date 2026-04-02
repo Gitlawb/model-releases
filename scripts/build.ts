@@ -9,6 +9,7 @@
  */
 
 import { readFileSync } from 'fs'
+import { noTelemetryPlugin } from './no-telemetry-plugin'
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'))
 const version = pkg.version
@@ -64,6 +65,7 @@ const result = await Bun.build({
     'MACRO.NATIVE_PACKAGE_URL': 'undefined',
   },
   plugins: [
+    noTelemetryPlugin,
     {
       name: 'bun-bundle-shim',
       setup(build) {
