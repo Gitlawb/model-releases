@@ -1,0 +1,24 @@
+model_id: claude-sonnet-4-6
+display_name: Claude Sonnet 4.6
+provider: Anthropic
+release_date: 2026-04-24
+
+context_window: 200000
+output_tokens_max: null
+modalities: [text, image, pdf]
+status: stable
+supersedes: null
+
+pricing:
+  currency: USD
+  input_per_mtok: null
+  output_per_mtok: null
+  cached_input_per_mtok: null
+
+sources: []
+
+tags: [mid-tier, low-latency]
+
+notes: >
+  Same context window as Opus 4.6 with lower latency. Default model for the
+  fast-iteration tier in several Claude-powered products.

@@ -1,0 +1,24 @@
+model_id: claude-opus-4-6
+display_name: Claude Opus 4.6
+provider: Anthropic
+release_date: 2026-04-24
+
+context_window: 200000
+output_tokens_max: null
+modalities: [text, image, pdf]
+status: stable
+supersedes: null
+
+pricing:
+  currency: USD
+  input_per_mtok: null
+  output_per_mtok: null
+  cached_input_per_mtok: null
+
+sources: []
+
+tags: [flagship]
+
+notes: >
+  Opus-class model. Model ID follows the `claude-{family}-{major}-{minor}`
+  convention. Also available as the fast-mode backend for Claude Code.

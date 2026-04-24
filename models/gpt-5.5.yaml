@@ -1,0 +1,24 @@
+model_id: gpt-5.5
+display_name: GPT-5.5
+provider: OpenAI
+release_date: 2026-04-24
+
+context_window: 256000
+output_tokens_max: null
+modalities: [text, code]
+status: stable
+supersedes: null
+
+pricing:
+  currency: USD
+  input_per_mtok: null
+  output_per_mtok: null
+  cached_input_per_mtok: null
+
+sources: []
+
+tags: [flagship, coding]
+
+notes: >
+  Latest GPT-5.x iteration. Codex-branded integrations are tracked under this
+  model ID when the underlying model is GPT-5.5.

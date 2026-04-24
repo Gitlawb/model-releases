@@ -1,0 +1,24 @@
+model_id: xiaomi-mimi-v2-5
+display_name: Xiaomi MiMi V2.5
+provider: Xiaomi
+release_date: 2026-04-01
+
+context_window: null
+output_tokens_max: null
+modalities: [text]
+status: stable
+supersedes: null
+
+pricing:
+  currency: USD
+  input_per_mtok: null
+  output_per_mtok: null
+  cached_input_per_mtok: null
+
+sources: []
+
+tags: []
+
+notes: >
+  Stub entry. Contributions welcome: confirm display name spelling,
+  context window, modalities, and primary announcement link.

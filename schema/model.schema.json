@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/gitlawb/model-releases/schema/model.schema.json",
+  "title": "Model Release Entry",
+  "type": "object",
+  "required": ["model_id", "provider", "release_date"],
+  "additionalProperties": false,
+  "properties": {
+    "model_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9.\\-]*$",
+      "description": "Canonical lowercase slug (letters, digits, dots, hyphens). Matches the YAML filename stem."
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Human-readable name (e.g., \"Claude Opus 4.7\")."
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Organization that serves the model (e.g., Anthropic, OpenAI, xAI, Alibaba)."
+    },
+    "release_date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "ISO 8601 date of public availability."
+    },
+    "context_window": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "Input context window in tokens."
+    },
+    "output_tokens_max": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "Maximum output tokens per response, if documented."
+    },
+    "modalities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["text", "code", "image", "audio", "video", "pdf", "embedding"]
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["preview", "stable", "deprecated", "retired"],
+      "default": "stable"
+    },
+    "supersedes": {
+      "type": ["string", "null"],
+      "description": "model_id of the previous model this one replaces, if applicable."
+    },
+    "pricing": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "currency": { "type": "string", "default": "USD" },
+        "input_per_mtok": { "type": ["number", "null"], "minimum": 0 },
+        "output_per_mtok": { "type": ["number", "null"], "minimum": 0 },
+        "cached_input_per_mtok": { "type": ["number", "null"], "minimum": 0 }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "pattern": "^https?://"
+      },
+      "uniqueItems": true,
+      "description": "URLs of primary sources: official announcement, X post, docs, model card."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-form notes: what changed, why it matters, caveats."
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true,
+      "description": "Free-form tags (e.g., reasoning, multimodal, open-weights)."
+    }
+  }
+}

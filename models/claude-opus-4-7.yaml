@@ -1,0 +1,24 @@
+model_id: claude-opus-4-7
+display_name: Claude Opus 4.7
+provider: Anthropic
+release_date: 2026-04-24
+
+context_window: 1000000
+output_tokens_max: null
+modalities: [text, image, pdf]
+status: stable
+supersedes: claude-opus-4-6
+
+pricing:
+  currency: USD
+  input_per_mtok: null
+  output_per_mtok: null
+  cached_input_per_mtok: null
+
+sources: []
+
+tags: [flagship, long-context]
+
+notes: >
+  Successor to Opus 4.6. Ships with a 1M-token context variant. Backs the
+  default Claude Code experience.

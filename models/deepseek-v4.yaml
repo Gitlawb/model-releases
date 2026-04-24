@@ -1,0 +1,24 @@
+model_id: deepseek-v4
+display_name: DeepSeek V4
+provider: DeepSeek
+release_date: 2026-04-01
+
+context_window: null
+output_tokens_max: null
+modalities: [text, code]
+status: stable
+supersedes: null   # deepseek-v3 not tracked in this repo yet
+
+pricing:
+  currency: USD
+  input_per_mtok: null
+  output_per_mtok: null
+  cached_input_per_mtok: null
+
+sources: []
+
+tags: [open-weights]
+
+notes: >
+  Stub entry. Contributions welcome: fill in context window, pricing, and
+  the primary announcement link.

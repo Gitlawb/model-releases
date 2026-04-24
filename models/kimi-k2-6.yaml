@@ -1,0 +1,23 @@
+model_id: kimi-k2-6
+display_name: Kimi K2.6
+provider: Moonshot AI
+release_date: 2026-04-01
+
+context_window: null
+output_tokens_max: null
+modalities: [text]
+status: stable
+supersedes: null
+
+pricing:
+  currency: USD
+  input_per_mtok: null
+  output_per_mtok: null
+  cached_input_per_mtok: null
+
+sources: []
+
+tags: []
+
+notes: >
+  Stub entry. Contributions welcome.

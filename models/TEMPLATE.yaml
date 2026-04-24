@@ -1,0 +1,27 @@
+# Copy this file to models/<model_id>.yaml and fill in the fields.
+# Filename stem must equal model_id. Run scripts/validate.py before committing.
+
+model_id: provider-model-x-y       # lowercase slug: [a-z0-9][a-z0-9.-]*
+display_name: Provider Model X.Y   # human-readable
+provider: Provider Name            # Anthropic | OpenAI | xAI | Alibaba | ...
+release_date: YYYY-MM-DD           # ISO 8601
+
+context_window: 200000             # integer tokens, or null if unknown
+output_tokens_max: null            # integer tokens, or null if unknown
+modalities: [text]                 # any of: text, code, image, audio, video, pdf, embedding
+status: stable                     # preview | stable | deprecated | retired
+supersedes: null                   # model_id of predecessor, or null
+
+pricing:
+  currency: USD
+  input_per_mtok: null             # USD per million input tokens
+  output_per_mtok: null
+  cached_input_per_mtok: null
+
+sources:
+  - https://example.com/announcement   # official announcement, X post, docs
+
+tags: []                            # e.g. [reasoning, multimodal, open-weights]
+
+notes: >
+  One or two sentences on what changed and why it matters.

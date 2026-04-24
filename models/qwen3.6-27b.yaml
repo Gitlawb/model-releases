@@ -1,0 +1,23 @@
+model_id: qwen3.6-27b
+display_name: Qwen3.6 27B
+provider: Alibaba
+release_date: 2026-04-01
+
+context_window: null
+output_tokens_max: null
+modalities: [text]
+status: stable
+supersedes: null
+
+pricing:
+  currency: USD
+  input_per_mtok: null
+  output_per_mtok: null
+  cached_input_per_mtok: null
+
+sources: []
+
+tags: [open-weights]
+
+notes: >
+  Stub entry. Dense 27B member of the Qwen3.6 family. Contributions welcome.
